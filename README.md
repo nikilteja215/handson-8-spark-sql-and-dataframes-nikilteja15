@@ -232,6 +232,13 @@ Identify trending hashtags by analyzing their frequency of use across all posts.
   - Flatten using `explode`
   - Aggregate and sort by frequency
 
+**Explanation:**
+- `explode()` and `split()` break the comma-separated hashtags into individual rows.
+- `trim()` and `lower()` clean each hashtag (removing spaces and making lowercase).
+- Group by the cleaned `Hashtag` and count their occurrences.
+- Order the result in descending order of count.
+- `coalesce(1)` ensures the output is written into a single file.
+
 
 **Expected Outcome:**  
 A ranked list of the most-used hashtags and their frequencies.
@@ -262,6 +269,13 @@ Understand how users from different age groups engage with content based on like
   - Group by `AgeGroup`
   - Calculate average likes and retweets
 
+**Explanation:**
+- Joins `posts.csv` with `users.csv` on `UserID`.
+- Groups the combined data by `AgeGroup`.
+- Uses `avg()` to compute the average likes and retweets for each age group.
+- Orders the results based on `Avg_Likes` in descending order.
+- `coalesce(1)` writes the output into a single CSV file.
+
 **Expected Outcome:**  
 A summary of user engagement behavior categorized by age group.
 
@@ -288,6 +302,16 @@ Evaluate how sentiment (positive, neutral, or negative) influences post engageme
 **Process:** 
   - Categorize posts as Positive, Neutral, or Negative
   - Calculate average likes and retweets per sentiment group
+
+**Explanation:**
+- Creates a new `Sentiment` column based on `SentimentScore`:
+  - Positive: `SentimentScore > 0.3`
+  - Negative: `SentimentScore < -0.3`
+  - Neutral: Between -0.3 and 0.3
+- Groups the posts by `Sentiment`.
+- Calculates average likes and retweets for each sentiment group using `avg()`.
+- Orders the output by `Avg_Likes` in descending order.
+- Writes the final output as a single CSV file.
 
 **Expected Outcome:**  
 Insights into whether happier or angrier posts get more attention.
@@ -317,6 +341,14 @@ Find the most influential verified users based on their post reach (likes + retw
   - Filter verified users
   - Calculate total reach per user
   - Rank top 5 by total reach
+
+**Explanation:**
+- Filters verified users from `users.csv`.
+- Calculates each post’s reach (`Likes + Retweets`).
+- Aggregates total reach per `UserID`.
+- Joins the reach data with verified users to fetch `Username`.
+- Orders users by `Total_Reach` and selects the top 5.
+- `coalesce(1)` ensures the output is consolidated into a single file.
 
 **Expected Outcome:**  
 A leaderboard of verified users based on audience engagement.
